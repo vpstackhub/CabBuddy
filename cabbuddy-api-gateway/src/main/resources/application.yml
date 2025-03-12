@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: cabbuddy-api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: cabbuddy-booking-service
+          uri: lb://CABBUDDY-BOOKING-SERVICE
+          predicates:
+            - Path=/booking/**
+        - id: cabbuddy-passenger-service
+          uri: lb://CABBUDDY-PASSENGER-SERVICE
+          predicates:
+            - Path=/passenger/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
